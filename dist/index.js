@@ -86,6 +86,121 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/blocks/accordion/index.js":
+/*!***************************************!*\
+  !*** ./src/blocks/accordion/index.js ***!
+  \***************************************/
+/*! exports provided: name, settings */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "name", function() { return name; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "settings", function() { return settings; });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _components_accordion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/accordion */ "./src/components/accordion/index.js");
+
+
+/**
+ * Accordion Block
+ */
+
+/**
+ * WordPress dependencies
+ */
+
+/**
+ * Internal dependencies
+ */
+
+
+/**
+ * Block name
+ * 
+ * @type {string}
+ */
+
+const name = 'gutenberg-block-components/accordion';
+/**
+ * Block settings
+ * 
+ * @type {Object}
+ */
+
+const settings = {
+  /**
+   * Block title
+   * 
+   * @type {string}
+   */
+  title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Accordion', 'gbc'),
+
+  /**
+   * Block icon
+   * 
+   * @type {string}
+   */
+  icon: 'format-image',
+
+  /**
+   * Block description
+   * 
+   * @type {string}
+   */
+  description: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Accordion Block', 'gbc'),
+
+  /**
+   * Block category
+   * 
+   * @type {string}
+   */
+  category: 'common',
+
+  /**
+   * Block attributes
+   * 
+   * @type {Object}
+   */
+  attributes: {
+    accordion: {
+      type: 'array',
+      default: []
+    },
+    accordionTitleTag: {
+      type: 'string',
+      default: 'h3'
+    }
+  },
+
+  /**
+   * Create editor block
+   * 
+   * @param {Object} props Edit props
+   * 
+   * @return {*} 
+   */
+  edit(props) {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_accordion__WEBPACK_IMPORTED_MODULE_2__["default"], props);
+  },
+
+  /**
+   * Save
+   * 
+   * @param {Object} props Save props
+   * 
+   * @return {*} 
+   */
+  save(props) {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_accordion__WEBPACK_IMPORTED_MODULE_2__["default"].Content, props);
+  }
+
+};
+
+/***/ }),
+
 /***/ "./src/blocks/index.js":
 /*!*****************************!*\
   !*** ./src/blocks/index.js ***!
@@ -98,6 +213,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _map__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./map */ "./src/blocks/map/index.js");
+/* harmony import */ var _accordion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./accordion */ "./src/blocks/accordion/index.js");
 /**
  * Block Registration
  */
@@ -112,8 +228,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 const registerBlocks = () => {
   Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__["registerBlockType"])(_map__WEBPACK_IMPORTED_MODULE_1__["name"], _map__WEBPACK_IMPORTED_MODULE_1__["settings"]);
+  Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__["registerBlockType"])(_accordion__WEBPACK_IMPORTED_MODULE_2__["name"], _accordion__WEBPACK_IMPORTED_MODULE_2__["settings"]);
 }; // Kick Off all block here
 
 
@@ -248,6 +366,317 @@ const settings = {
   }
 
 };
+
+/***/ }),
+
+/***/ "./src/components/accordion/accordion-row.js":
+/*!***************************************************!*\
+  !*** ./src/components/accordion/accordion-row.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "lodash");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
+
+
+/**
+ * Accordion row component
+ */
+
+/**
+ * External dependencies
+ */
+
+/**
+ * WordPress dependencies
+ */
+
+
+
+/**
+ * Accordion row component
+ * 
+ * @param {Object} props Component props
+ * 
+ * @return {Object} 
+ */
+
+const AccordionRow = ({
+  attributes,
+  setAttributes,
+  accordionItem,
+  index
+}) => {
+  const {
+    accordion,
+    accordionTitleTag
+  } = attributes;
+  /**
+   * Update row values
+   * 
+   * @param {*} key
+   *  
+   * @param {*} value
+   * 
+   * @return {void} 
+   */
+
+  const updateRow = (key, value) => {
+    const updateAccordion = Object(lodash__WEBPACK_IMPORTED_MODULE_1__["extend"])([], accordion);
+    updateAccordion[index][key] = value;
+    setAttributes({
+      accordion: updateAccordion
+    });
+  };
+
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: "gbc-accordion__row"
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: "gbc-accordion__header"
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__["RichText"], {
+    tagName: accordionTitleTag || 'h3',
+    value: accordionItem.title,
+    onChange: value => updateRow('title', value),
+    placeholder: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Enter title...', 'gbc'),
+    className: "gbc-accordion__row-title"
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: "gbc-accordion__content"
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__["RichText"], {
+    tagName: 'p',
+    value: accordionItem.description,
+    onChange: value => updateRow('description', value),
+    placeholder: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Enter content...', 'gbc'),
+    className: "gbc-accordion__row-content"
+  })));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (AccordionRow);
+
+/***/ }),
+
+/***/ "./src/components/accordion/index.js":
+/*!*******************************************!*\
+  !*** ./src/components/accordion/index.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "lodash");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _accordion_row__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./accordion-row */ "./src/components/accordion/accordion-row.js");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./src/components/accordion/save.js");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__);
+
+
+/**
+ * Accordion component
+ */
+
+/**
+ * External dependencies
+ */
+
+/**
+ * WordPress dependencies
+ */
+
+
+/**
+ * Internal dependencies
+ */
+
+
+
+
+
+
+/**
+ * Accordion
+ * 
+ * @param {Object} props Component props
+ * 
+ * @return {*} 
+ */
+
+const Accordion = ({
+  attributes,
+  setAttributes
+}) => {
+  const {
+    accordion,
+    accordionTitleTag
+  } = attributes;
+  const row = {
+    title: '',
+    content: ''
+  };
+  /**
+   * Add row.
+   * 
+   * @return {void}
+   */
+
+  const addRow = () => {
+    if (!Object(lodash__WEBPACK_IMPORTED_MODULE_1__["isArray"])(accordion)) {
+      return;
+    }
+
+    const updateAccordion = Object(lodash__WEBPACK_IMPORTED_MODULE_1__["extend"])([], accordion);
+    updateAccordion.push(row);
+    setAttributes({
+      accordion: updateAccordion
+    });
+  };
+
+  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    if (!accordion.length) {
+      addRow();
+    }
+  }, []);
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: "gbc-accordion"
+  }, Object(lodash__WEBPACK_IMPORTED_MODULE_1__["isArray"])(accordion) && accordion.map((accordionItem, index) => {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_accordion_row__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      attributes: attributes,
+      setAttributes: setAttributes,
+      accordionItem: accordionItem,
+      index: index,
+      key: index
+    });
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+    onClick: addRow
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["Dashicon"], {
+    icon: "insert",
+    className: "gbc-accordion__insert"
+  })), accordionTitleTag && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__["InspectorControls"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["Panel"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["PanelBody"], {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Title Tag', 'gbc')
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["SelectControl"], {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Title Tag', 'gbc'),
+    value: accordionTitleTag,
+    options: [{
+      value: 'p',
+      label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Paragraph', 'gbc')
+    }, {
+      value: 'h1',
+      label: 'h1'
+    }, {
+      value: 'h2',
+      label: 'h2'
+    }, {
+      value: 'h3',
+      label: 'h3'
+    }, {
+      value: 'h4',
+      label: 'h4'
+    }, {
+      value: 'h5',
+      label: 'h5'
+    }, {
+      value: 'h6',
+      label: 'h6'
+    }],
+    onChange: value => {
+      setAttributes({
+        accordionTitleTag: value
+      });
+    }
+  })))));
+};
+
+Accordion.Row = _accordion_row__WEBPACK_IMPORTED_MODULE_2__["default"];
+Accordion.Content = _save__WEBPACK_IMPORTED_MODULE_3__["default"];
+/* harmony default export */ __webpack_exports__["default"] = (Accordion);
+
+/***/ }),
+
+/***/ "./src/components/accordion/save.js":
+/*!******************************************!*\
+  !*** ./src/components/accordion/save.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "lodash");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
+
+
+/**
+ * WordPress dependencies
+ */
+
+/**
+ * External dependencies
+ */
+
+
+/**
+ * Save Component
+ * 
+ * @param {Object} props Props
+ * 
+ * @return {*} 
+ */
+
+const Save = ({
+  attributes
+}) => {
+  const {
+    accordion,
+    accordionTitleTag
+  } = attributes;
+
+  if (!Object(lodash__WEBPACK_IMPORTED_MODULE_2__["isArray"])(accordion)) {
+    return null;
+  }
+
+  const rows = accordion.map((accordionItem, key) => {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      className: "gbc-accordion__row",
+      key: `gbc-accordion-row-${key}`
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      className: "gbc-accordion__header"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__["RichText"].Content, {
+      tagName: accordionTitleTag || 'h3',
+      value: accordionItem.title,
+      className: "gbc-accordion__row-title"
+    })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      className: "gbc-accordion__content"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__["RichText"].Content, {
+      tagName: 'undefined' !== typeof wp ? 'p' : 'div',
+      value: accordionItem.description,
+      className: "gbc-accordion__row-content"
+    })));
+  });
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: "gbc-accordion gbc-active"
+  }, rows);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Save);
 
 /***/ }),
 
@@ -690,6 +1119,17 @@ const MapToolbarControls = ({
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["i18n"]; }());
+
+/***/ }),
+
+/***/ "lodash":
+/*!*************************!*\
+  !*** external "lodash" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["lodash"]; }());
 
 /***/ })
 

@@ -47,7 +47,7 @@ class Gutenberg_Block_Components {
      */
     public function init_hooks() {
         add_action( 'init', [ $this, 'register_blocks' ] );
-        add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ] );
+        add_action( 'enqueue_block_editor_assets', [ $this, 'admin_scripts' ] );
     }
 
     /**
@@ -66,8 +66,10 @@ class Gutenberg_Block_Components {
      */
     public function register_blocks() {
         register_block_type('gutenberg-block-components/map', [
-            // 'sript' =>  '',
-            // 'style' =>  '',
+            'editor_script' => 'gutenberg-block-components-scripts',
+        ]);
+
+        register_block_type('gutenberg-block-components/accordion', [
             'editor_script' => 'gutenberg-block-components-scripts',
         ]);
     }

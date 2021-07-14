@@ -15,6 +15,8 @@
     "@wordpress/components": "^14.1.6",
     "@wordpress/element": "^3.1.1",
     "@wordpress/i18n": "^4.1.1",
-    "@wordpress/scripts": "^16.1.4"
+    "@wordpress/scripts": "^16.1.4",
+    "accordion-js": "^3.1.1",
+    "lodash": "^4.17.21"
   }
 }
