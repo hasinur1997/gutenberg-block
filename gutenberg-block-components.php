@@ -72,6 +72,10 @@ class Gutenberg_Block_Components {
         register_block_type('gutenberg-block-components/accordion', [
             'editor_script' => 'gutenberg-block-components-scripts',
         ]);
+
+        register_block_type('gutenberg-block-components/countdown', [
+            'editor_script' => 'gutenberg-block-components-scripts',
+        ]);
     }
 }
 

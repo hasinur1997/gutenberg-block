@@ -201,6 +201,126 @@ const settings = {
 
 /***/ }),
 
+/***/ "./src/blocks/countdown/index.js":
+/*!***************************************!*\
+  !*** ./src/blocks/countdown/index.js ***!
+  \***************************************/
+/*! exports provided: name, settings */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "name", function() { return name; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "settings", function() { return settings; });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _components_countdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/countdown */ "./src/components/countdown/index.js");
+
+
+/**
+ * Countdonw Block
+ */
+
+/**
+ * WordPress dependencies
+ */
+
+/**
+ * Internal dependencies
+ */
+
+
+/**
+ * Block name
+ * 
+ * @type {string}
+ */
+
+const name = 'gutenberg-block-components/countdown';
+/**
+ *  Block settings
+ * 
+ * @type {Object}
+ */
+
+const settings = {
+  /**
+   * Block title
+   * 
+   * @type {string}
+   */
+  title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Countdwon', 'gbc'),
+
+  /**
+   * Block icon
+   * 
+   * @type {string}
+   */
+  icon: 'clock',
+
+  /**
+   * Block description 
+   * 
+   * @type {string}
+   */
+  description: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Countdown Block', 'gbc'),
+
+  /**
+   * Block category
+   * 
+   * @type {string}
+   */
+  category: 'common',
+
+  /**
+   * Block attributes
+   * 
+   * @type {Object}
+   */
+  attributes: {
+    countdownExpirationDate: {
+      type: 'number',
+      default: 60 * (60 + Math.ceil(Date.now() / 60000))
+    },
+    countdownExpirationMessage: {
+      type: 'string',
+      default: ''
+    },
+    countdownExpirationMessageTag: {
+      type: 'string',
+      default: 'h2'
+    }
+  },
+
+  /**
+   * Creates editor block
+   * 
+   * @param {Object} props Edit props 
+   * 
+   * 
+   * @return {*}
+   */
+  edit(props) {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_countdown__WEBPACK_IMPORTED_MODULE_2__["default"], props);
+  },
+
+  /**
+   * Save
+   * 
+   * @param {Object} props Save props.
+   *  
+   * @returns {*}
+   */
+  save(props) {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_countdown__WEBPACK_IMPORTED_MODULE_2__["default"].Content, props);
+  }
+
+};
+
+/***/ }),
+
 /***/ "./src/blocks/index.js":
 /*!*****************************!*\
   !*** ./src/blocks/index.js ***!
@@ -214,6 +334,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _map__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./map */ "./src/blocks/map/index.js");
 /* harmony import */ var _accordion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./accordion */ "./src/blocks/accordion/index.js");
+/* harmony import */ var _countdown__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./countdown */ "./src/blocks/countdown/index.js");
 /**
  * Block Registration
  */
@@ -229,9 +350,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 const registerBlocks = () => {
   Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__["registerBlockType"])(_map__WEBPACK_IMPORTED_MODULE_1__["name"], _map__WEBPACK_IMPORTED_MODULE_1__["settings"]);
   Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__["registerBlockType"])(_accordion__WEBPACK_IMPORTED_MODULE_2__["name"], _accordion__WEBPACK_IMPORTED_MODULE_2__["settings"]);
+  Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__["registerBlockType"])(_countdown__WEBPACK_IMPORTED_MODULE_3__["name"], _countdown__WEBPACK_IMPORTED_MODULE_3__["settings"]);
 }; // Kick Off all block here
 
 
@@ -674,6 +797,267 @@ const Save = ({
   return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     className: "gbc-accordion gbc-active"
   }, rows);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Save);
+
+/***/ }),
+
+/***/ "./src/components/countdown/functions.js":
+/*!***********************************************!*\
+  !*** ./src/components/countdown/functions.js ***!
+  \***********************************************/
+/*! exports provided: getRemainingTime, tick */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRemainingTime", function() { return getRemainingTime; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "tick", function() { return tick; });
+/**
+ * Gets remaining time
+ * 
+ * @param {number} countdownExpirationDate timer expiration date
+ *  
+ * @returns {numbers} 
+ */
+const getRemainingTime = countdownExpirationDate => {
+  return countdownExpirationDate - Math.floor(Date.now() / 1000);
+};
+/**
+ * Update remaining time state when called
+ * 
+ * @param {Object} setRemainingTime Function to update remainingTime state
+ * 
+ * @param {number} countdownExpirationDate timer expiration date
+ * 
+ * @return {void} 
+ */
+
+const tick = (setRemainingTime, countdownExpirationDate) => {
+  setRemainingTime(getRemainingTime(countdownExpirationDate));
+};
+
+/***/ }),
+
+/***/ "./src/components/countdown/index.js":
+/*!*******************************************!*\
+  !*** ./src/components/countdown/index.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./functions */ "./src/components/countdown/functions.js");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./save */ "./src/components/countdown/save.js");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__);
+
+
+/**
+ * Countdown component
+ */
+
+/**
+ * Internal dependencies
+ */
+
+
+/**
+ * WordPress dependencies
+ */
+
+
+
+
+
+
+const Countdown = ({
+  attributes,
+  setAttributes
+}) => {
+  const [remainingTime, setRemainingTime] = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useState"])(Object(_functions__WEBPACK_IMPORTED_MODULE_1__["getRemainingTime"])(attributes.countdownExpirationDate));
+  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    const tickInterval = setInterval(_functions__WEBPACK_IMPORTED_MODULE_1__["tick"], 1000, setRemainingTime, attributes.countdownExpirationDate);
+
+    if (0 >= remainingTime) {
+      clearInterval(tickInterval);
+    } // Use effect cleanup
+
+
+    return () => {
+      clearTimeout(remainingTime);
+    };
+  });
+  const seconds = remainingTime % 60;
+  const minutes = (remainingTime - seconds) % 3600 / 60;
+  const hours = (remainingTime - minutes * 60 - seconds) % 86400 / 3600;
+  const days = (remainingTime - hours * 3600 - minutes * 60 - seconds) % 604800 / 86400;
+  const weeks = (remainingTime - days * 86400 - hours * 3600 - minutes * 60 - seconds) / 604800;
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: "gbc-countdown"
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__["InspectorControls"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["DateTimePicker"], {
+    className: "gbc-countdown__datetimepicker",
+    currentDate: attributes.countdownExpirationDate * 1000,
+    onChange: newDate => {
+      setAttributes({
+        countdownExpirationDate: Math.floor(Date.parse() / 1000)
+      });
+    }
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: "gbc-countdown__heading"
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Weeks', 'gbc')), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Days', 'gbc')), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Hours', 'gbc')), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Minutes', 'gbc')), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Seconds', 'gbc'))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: "gbc-countdown__timer"
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", null, weeks), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", null, days), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", null, hours), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", null, minutes), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", null, seconds)), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__["RichText"], {
+    tagName: attributes.countdownExpirationMessageTag || 'h2',
+    placeholder: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Enter countdown expiry message', 'gbc'),
+    className: "gbc-countdown__message-input",
+    value: attributes.countdownExpirationMessageTag,
+    onChange: newMessage => {
+      setAttributes({
+        countdownExpirationMessageTag: newMessage
+      });
+    }
+  }));
+};
+
+Countdown.Content = _save__WEBPACK_IMPORTED_MODULE_2__["default"];
+/* harmony default export */ __webpack_exports__["default"] = (Countdown);
+
+/***/ }),
+
+/***/ "./src/components/countdown/save.js":
+/*!******************************************!*\
+  !*** ./src/components/countdown/save.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./functions */ "./src/components/countdown/functions.js");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
+
+
+/**
+ * Countdown component
+ */
+
+/**
+ * Internal dependencies
+ */
+
+/**
+ * WordPress dependencies
+ */
+
+
+
+
+/**
+ * Countdown component
+ * 
+ * @param {Object} props Component props
+ * 
+ * @return {*} 
+ */
+
+const Save = ({
+  attributes
+}) => {
+  // const [ remainingTime, setRemainingTime ] = useState( 
+  //     getRemainingTime( attributes.countdownExpirationDate ) 
+  // )
+  // useEffect( () => {
+  //     const tickInterval = setInterval(
+  //         tick,
+  //         1000,
+  //         setRemainingTime,
+  //         attributes.countdownExpirationDate
+  //     )
+  //     if ( 0 >= remainingTime ) {
+  //         clearInterval( tickInterval )
+  //     }
+  //     // Use effect cleanup
+  //     return () => {
+  //         clearTimeout( remainingTime )
+  //     }
+  // } )
+  // const seconds = remainingTime % 60
+  // const minutes = ( ( remainingTime - seconds ) % 3600 ) / 60
+  // const hours   = ( ( remainingTime - minutes * 60 - seconds ) % 86400 ) / 3600
+  // const days =
+  //             ( ( remainingTime - hours * 3600 - minutes * 60 - seconds ) % 604800 ) /
+  //             86400;
+  // const weeks =
+  //     ( remainingTime -
+  //         days * 86400 -
+  //         hours * 3600 -
+  //         minutes * 60 -
+  //         seconds ) / 604800;
+  // const isExpired = 0 >= remainingTime
+  // return (
+  //     <div className="gbc-countdoun">
+  //         { ! isExpired &&
+  //             <>
+  //                 <div className="gbc-countdown__heading">
+  //                     <span>
+  //                         { ' ' }
+  //                         { __( 'Weeks', 'gbc' ) }
+  //                         { ' ' }
+  //                     </span>
+  //                     <span>
+  //                         { ' ' }
+  //                         { __( 'Days', 'gbc' ) }
+  //                         { ' ' }
+  //                     </span>
+  //                     <span>
+  //                         { ' ' }
+  //                         { __( 'Hours', 'gbc' ) }
+  //                         { ' ' }
+  //                     </span>
+  //                     <span>
+  //                         { ' ' }
+  //                         { __( 'Minutes', 'gbc' ) }
+  //                         { ' ' }
+  //                     </span>
+  //                     <span>
+  //                         { ' ' }
+  //                         { __( 'Seconds', 'gbc' ) }
+  //                         { ' ' }
+  //                     </span>
+  //                 </div>
+  //                 <div className="gbc-countdown__timer">
+  //                     <span>{ weeks }</span>
+  //                     <span>{ days }</span>
+  //                     <span>{ hours }</span>
+  //                     <span>{ minutes }</span>
+  //                     <span>{ seconds }</span>
+  //                 </div>
+  //             </>
+  //         }
+  //         { isExpired && (
+  //             <RichText.Content
+  //                 className="gbc-countdown__message"
+  //                 tagName={ attributes.countdownExpirationMessageTag || 'h2' }
+  //                 value={ attributes.countdownExpirationMessage }
+  //             />
+  //         ) }
+  //     </div>
+  // )
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, "Hello");
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Save);
